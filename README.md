@@ -18,9 +18,7 @@ sudo apt install fpc sox
 | File | Description |
 |------|-------------|
 | `guitar.pas` | 6-string guitar simulator. Play notes with your keyboard. Requires sox. |
-| `seven_nation_army.pas` | Plays Seven Nation Army by The White Stripes. Automatically. |
-| `morse_help.pas` | Transmits HELP in Morse code. For emergencies. |
-| `morse_encoder.pas` | Type any word — it gets transmitted in Morse code. Green interface. |
+| `morseCodeT` | Type any word — it gets transmitted in Morse code. Green interface. |
 | `quadratic.pas` | Solves quadratic equations. ax² + bx + c = 0. |
 | `halt_exit.pas` | Demonstrates the difference between `halt` and `exit`. |
 | `...` | Many more. Some good. Some questionable. |
