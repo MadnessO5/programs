@@ -53,6 +53,18 @@ no
 yes
 ```
 
+## Testing
+
+An automated test harness for this program is provided in `match_pt_test.sh`, built on the same "read one test per line, compare, report only failures" pattern described in section 2.13.2 ("Тесты"):
+
+```bash
+fpc match_pt.pas
+chmod +x match_pt_test.sh
+./match_pt_test.sh
+```
+
+No output means every test passed. See `README_test_scripts.md` for details on how the harness works and why it's built the way it is.
+
 ## Notes
 
 - **Always quote `*` and `?` on the command line** (single quotes, as in the examples above). Without quoting, the shell itself tries to expand `*`/`?` as filename wildcards *before* your program ever sees them (see the source material's own §1.2.7 reference) — quoting prevents that, and the quote characters themselves are stripped by the shell before `ParamStr` ever sees the arguments, so they won't show up as part of the string.
