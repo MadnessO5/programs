@@ -8,6 +8,12 @@ type
     TreeNodePos = ^TreeNodePtr;
 function SearchTree(var p: TreeNodePtr; val: longint): TreeNodePos;
 begin
+    {$IFDEF DEBUG}
+    if p = nil then
+        writeln('DEBUG: SearchTree reached an empty subtree, val = ', val)
+    else
+        writeln('DEBUG: SearchTree at node ', p^.data, ', looking for ', val);
+    {$ENDIF}
     if (p = nil) or (p^.data = val) then
         SearchTree := @p
     else
@@ -27,25 +33,52 @@ begin
         pos^^.data := val;
         pos^^.left := nil;
         pos^^.right := nil;
-        AddToTree := true
+        AddToTree := true;
+        {$IFDEF DEBUG}
+        writeln('DEBUG: AddToTree inserted ', val)
+        {$ENDIF}
     end
     else
-        AddToTree := false
+    begin
+        AddToTree := false;
+        {$IFDEF DEBUG}
+        writeln('DEBUG: AddToTree rejected duplicate ', val)
+        {$ENDIF}
+    end
 end;
 function IsInTree(p: TreeNodePtr; val: longint): boolean;
 begin
     IsInTree := SearchTree(p, val)^ <> nil
 end;
+
+{$IFDEF DEBUG}
+procedure DebugPrintTree(p: TreeNodePtr);
+begin
+    if p <> nil then
+    begin
+        DebugPrintTree(p^.left);
+        write(p^.data, ' ');
+        DebugPrintTree(p^.right)
+    end
+end;
+
+procedure DebugDumpTree(root: TreeNodePtr);
+begin
+    write('DEBUG: tree contents, sorted: ');
+    DebugPrintTree(root);
+    writeln
+end;
+{$ENDIF}
 var
     root: TreeNodePtr = nil;
     c: char;
     n: longint;
 begin
-    writeln('=== Двоичное дерево поиска ===');
-    writeln('Вводите команды в формате: <команда> <число>');
-    writeln('  + 5   -> добавить число 5 в дерево');
-    writeln('  ? 5   -> проверить, есть ли число 5 в дереве');
-    writeln('Для выхода нажмите Ctrl+D (Linux/macOS) или Ctrl+Z (Windows)');
+    writeln('=== Binary Search Tree ===');
+    writeln('Enter commands in the form: <command> <number>');
+    writeln('  + 5   -> add 5 to the tree');
+    writeln('  ? 5   -> check whether 5 is in the tree');
+    writeln('Press Ctrl+D (Linux/macOS) or Ctrl+Z (Windows) to exit');
     writeln;
     while not eof do
     begin
@@ -59,7 +92,12 @@ begin
             end;
             '+': begin
                 if AddToTree(root, n) then
-                    writeln('Successfully added')
+                begin
+                    writeln('Successfully added');
+                    {$IFDEF DEBUG}
+                    DebugDumpTree(root)
+                    {$ENDIF}
+                end
                 else
                     writeln('Couldn''t add!')
             end;
@@ -67,5 +105,5 @@ begin
                 writeln('I don''t know such command! Try "+" or "?"')
         end
     end;
-    writeln('Работа завершена, до свидания!')
+    writeln('Done, goodbye!')
 end.
