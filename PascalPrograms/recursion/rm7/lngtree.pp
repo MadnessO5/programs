@@ -18,6 +18,12 @@ type
 
 function SearchTree(var p: TreeNodePtr; val: longint): TreeNodePos;
 begin
+    {$IFDEF DEBUG}
+    if p = nil then
+        writeln('DEBUG: SearchTree reached an empty subtree, val = ', val)
+    else
+        writeln('DEBUG: SearchTree at node ', p^.data, ', looking for ', val);
+    {$ENDIF}
     if (p = nil) or (p^.data = val) then
         SearchTree := @p
     else
@@ -38,10 +44,18 @@ begin
         pos^^.data := val;
         pos^^.left := nil;
         pos^^.right := nil;
-        ok := true
+        ok := true;
+        {$IFDEF DEBUG}
+        writeln('DEBUG: AddToTree inserted ', val)
+        {$ENDIF}
     end
     else
-        ok := false
+    begin
+        ok := false;
+        {$IFDEF DEBUG}
+        writeln('DEBUG: AddToTree rejected duplicate ', val)
+        {$ENDIF}
+    end
 end;
 
 function IsInTree(p: TreeNodePtr; val: longint): boolean;
